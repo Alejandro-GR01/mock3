@@ -3,13 +3,17 @@ import { env } from "./env.js";
 
 const corsOpen = process.argv.includes("--cors-open");
 
-const whiteList: (string | undefined)[] = [env.FRONTEND_URL];
+// El browser NUNCA manda el header Origin con trailing slash, pero FRONTEND_URL
+// en el .env puede tenerlo → normalizamos antes de comparar (strict mode).
+const normalizeUrl = (url: string) => url.replace(/\/+$/, "");
+
+const whiteList: string[] = [normalizeUrl(env.FRONTEND_URL)];
 
 // --cors-open: cualquier origin se agrega dinámicamente al whitelist
 if (corsOpen) {
   console.log("[CORS] Open mode — any origin will be allowed");
 } else {
-  console.log(`[CORS] Strict mode — only ${env.FRONTEND_URL}`);
+  console.log(`[CORS] Strict mode — only ${normalizeUrl(env.FRONTEND_URL)}`);
 }
 
 export const corsConfig: CorsOptions = {
