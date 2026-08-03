@@ -1,0 +1,41 @@
+# Dependencies & builds
+node_modules/
+dist/
+*.tsbuildinfo
+coverage/
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+*.log
+
+# Editors
+.vscode/
+.idea/
+
+# Testing artifacts
+playwright-report/
+test-results/
+.playwright-mcp/
+
+# Local backend workspace
+.mock3-backend/
+
+# AI tooling configuration — NOT part of the product.
+# These are agent/skill definitions copied into the working dir by dev tools.
+.agents/
+.claude/
+.kiro/
+.codex/
+.github/skills/
+.github/hooks/
+.github/issues/
+.impeccable/
+skills-lock.json
+
+# Local-only development docs (agent workflow) — NOT for the public repo.
+/AGENTS.md
+/MOCK3_SETTINGS_ISSUES.md
+/PLAN_CUMPLIMIENTO.md
+.specs/

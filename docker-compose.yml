@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-mock3_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-mock3_pass}
+      POSTGRES_DB: ${POSTGRES_DB:-mock3_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-mock3_user} -d ${POSTGRES_DB:-mock3_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    # NO ports exposed to host — internal network only (avoids the brew postgresql@16 port 5432 conflict)
+
+  backend:
+    build:
+      context: ./mock3-backend
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-mock3_user}:${POSTGRES_PASSWORD:-mock3_pass}@db:5432/${POSTGRES_DB:-mock3_db}
+      CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required}
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY:?CLERK_SECRET_KEY is required}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:8080}
+      PORT: ${PORT:-3001}
+      NODE_ENV: production
+    command: sh -c "npx drizzle-kit push --config=drizzle.config.ts && node dist/app.js"
+    # NO host ports — reachable ONLY through the frontend nginx proxy (internal network)
+    # Browser → :8080 (nginx) → /api/* and /mocks/* → backend:3001
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./mock3-dashboard
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8080}
+        VITE_CLERK_PUBLISHABLE_KEY: ${CLERK_PUBLISHABLE_KEY:?CLERK_PUBLISHABLE_KEY is required in .env — get it from dashboard.clerk.com}
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:
