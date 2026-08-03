@@ -38,7 +38,14 @@ const navItems: NavItem[] = [
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation();
   const [helpOpen, setHelpOpen] = React.useState(false);
-  const { state } = useSidebar();
+  const { state, isMobile, setOpenMobile } = useSidebar();
+
+  // Mobile drawer pattern: whenever the route changes, close the sidebar so
+  // it doesn't stay stuck on screen covering the newly navigated section.
+  // Covers NavLink clicks, CommandPalette navigation and Guide links alike.
+  React.useEffect(() => {
+    if (isMobile) setOpenMobile(false);
+  }, [location.pathname, isMobile, setOpenMobile]);
 
   return (
     <>
