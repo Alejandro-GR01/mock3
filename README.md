@@ -383,27 +383,34 @@ VITE_API_URL=https://api.tu-dominio.com                             # URL public
 > sin free tier destructivo — la investigacion previa concluyo que **Render** es la mejor opcion
 > (URL estable, 750h/mes free).
 
-### Modo `--host` (Red Local)
+### Modo CORS abierto (`--cors-open`)
 
-Para exponer el backend a otros dispositivos en la misma red (ej: probar el dashboard desde el celular):
+Para probar el dashboard desde otros dispositivos en la misma red (ej: desde el celular):
 
 ```bash
-# Backend con CORS abierto
-npm run build && node dist/app.js --host
+# Backend con CORS abierto a cualquier origin
+npm run build && node dist/app.js --cors-open
 
-# Frontend (en otra terminal)
+# Frontend (en otra terminal) — expuesto a la red
 cd ../mock3-dashboard
 npm run dev -- --host
 ```
 
+> **Nota:** el backend SIEMPRE escucha en todas las interfaces (`0.0.0.0`). `--cors-open` NO
+> controla el listen — solo activa el CORS dinámico: cualquier origin se agrega al whitelist.
+> Sin la bandera, CORS solo permite `FRONTEND_URL`.
+>
+> **No confundir los flags:** el `--host` del frontend es de **Vite** (expone el dev server a la
+> red) y el `--cors-open` es del **backend** (abre CORS). Son independientes.
+
 **CORS behavior:**
 
-| Flag                      | CORS                                                                                      |
-| ------------------------- | ----------------------------------------------------------------------------------------- |
-| `node dist/app.js`        | Solo permite `FRONTEND_URL` (del `.env`)                                                  |
-| `node dist/app.js --host` | Permite `FRONTEND_URL` + **cualquier dominio** que haga request (se agrega dinámicamente) |
+| Comando                        | CORS                                                                                      |
+| ------------------------------ | ----------------------------------------------------------------------------------------- |
+| `node dist/app.js`             | Solo permite `FRONTEND_URL` (del `.env`)                                                  |
+| `node dist/app.js --cors-open` | Permite `FRONTEND_URL` + **cualquier dominio** que haga request (se agrega dinámicamente) |
 
-Cuando `--host` está activo, el backend loguea los origins agregados:
+Cuando `--cors-open` está activo, el backend loguea los origins agregados:
 
 ```
 🔓 CORS: modo abierto — cualquier dominio será permitido
