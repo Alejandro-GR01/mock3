@@ -395,7 +395,5 @@ Tailwind generates utility classes from these directly: `bg-bg-editor`, `border-
 | File | Role |
 |------|------|
 | `DESIGN.mock3.md` | **This file** — source of truth for design tokens |
-| `.specs/design-system/design-system.md` | Production decision spec (⚠️ still uses the old `workspace-*` token vocabulary — **must be aligned to the real `@theme` names from this document**) |
 | `mock3-dashboard/src/index.css` | Tailwind v4 `@theme` token definitions (**real implementation** — the verbatim block above) |
 | `mock3-dashboard/src/lib/http-colors.ts` | HTTP method color constants (real chip convention) |
-| `AGENTS.md` | Conventions section (consistent: documents `text-http-put` as amber) |

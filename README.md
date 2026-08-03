@@ -381,7 +381,7 @@ VITE_API_URL=https://api.tu-dominio.com                             # URL public
 > **Nota sobre keepalive:** al abandonar el cloud (Back4app destruia el contenedor por expiracion
 > del custom domain), el proyecto corrio en local. Si volves a produccion, evalua una plataforma
 > sin free tier destructivo — la investigacion previa concluyo que **Render** es la mejor opcion
-> (URL estable, 750h/mes free). Ver `.specs/deployment/deployment.md`.
+> (URL estable, 750h/mes free).
 
 ### Modo `--host` (Red Local)
 
@@ -1118,7 +1118,7 @@ lookup en DB.
 > DB). El free tier de Back4app **destruye el contenedor** cuando el custom domain expira
 > (logs: `DEPLOYMENT DESTROYED`), dejando el backend inaccesible. Por eso el proyecto migro a
 > Docker Compose local. Si en el futuro se necesita hosting cloud, la investigacion previa
-> (`.specs/deployment/deployment.md`) concluyo que **Render** es la mejor opcion: URL estable,
+> concluyo que **Render** es la mejor opcion: URL estable,
 > 750 horas/mes free, sin destruccion automatica.
 
 #### Gotchas de Deployment
@@ -1279,26 +1279,9 @@ mock3/
 │   ├── vite.config.ts
 │   └── tsconfig.json
 │
-├── .specs/                     # Architectural Decision Records
-│   ├── dual-auth-flow/         # Dos capas de autenticacion
-│   ├── clerk-id-resolution/    # Resolucion de Clerk ID a UUID
-│   ├── frontend-auth-guard/    # Zustand isReady + TanStack Query enabled
-│   ├── rate-limiting/          # Sliding window por usuario
-│   ├── dashboard-real-data/    # Datos reales en dashboard
-│   ├── api-key-expiration/     # TTL opcional en horas
-│   ├── confirm-dialog-pattern/ # Type-to-confirm para acciones destructivas
-│   ├── mock-form-submission/   # Bug fix de formulario de mocks
-│   ├── regeneration-display-key/ # Display de key regenerada
-│   ├── api-key-name-migration/ # Migracion de columna name
-│   ├── api-key-naming/         # Feature de naming de keys
-│   ├── api-key-show-hide/      # Toggle mostrar/ocultar key
-│   └── usage-chart-fake-data/  # Reemplazo de datos ficticios
-│
 ├── MOCK3_PRD.md                # Product Requirements Document
 ├── DESIGN.mock3.md             # Design System Tokens
 ├── MOCK3_ISSUES.md             # 13 implementation slices
-├── MOCK3_SETTINGS_ISSUES.md    # 5 slices de la vista Settings
-├── AGENTS.md                   # Contexto completo del proyecto
 └── README.md                   # Este archivo
 ```
 

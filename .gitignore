@@ -39,3 +39,6 @@ skills-lock.json
 /MOCK3_SETTINGS_ISSUES.md
 /PLAN_CUMPLIMIENTO.md
 .specs/
+
+# macOS
+.DS_Store
